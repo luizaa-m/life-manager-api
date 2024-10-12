@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro
+        http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+    <changeSet  id="CREATE_CATEGORIA_GASTO"  author="luiza.martins">
+        <createTable tableName="CATEGORIA_GASTO">
+            <column name="ID_CATEGORIA_GASTO" type="${id.type}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NOME" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="categoria_gasto_seq" startValue="1" incrementBy="1"/>
+
+        <rollback>
+          <dropTable tableName="CATEGORIA_GASTO"/>
+            <dropSequence sequenceName="cateogira_gasto_seq"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
