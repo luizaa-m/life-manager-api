@@ -1,10 +1,13 @@
 package com.luizamartins.life_manager.categoriagasto;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 
@@ -16,7 +19,31 @@ public class CategoriaGastoController {
     private CategoriaGastoService categoriaGastoService;
 
     @GetMapping
-    public List<CategoriaGasto> getAllCategoriaGasto(){
-        return this.categoriaGastoService.findAll();
+    public ResponseEntity<List<CategoriaGasto>> getAll(){
+        return ResponseEntity.ok(this.categoriaGastoService.findAll());
+    }
+
+    @RequestMapping(path="/")
+    @GetMapping
+    public ResponseEntity<Page<CategoriaGasto>> getAllByPaginate(@RequestParam int page, @RequestParam int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return ResponseEntity.ok(this.categoriaGastoService.findAllByPageable(pageable));
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoriaGasto> createCategoriaGasto(@RequestBody CategoriaGasto categoriaGasto){
+        CategoriaGasto categoriaCreated = categoriaGastoService.create(categoriaGasto);
+        return ResponseEntity.ok(categoriaCreated);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") long id) {
+        categoriaGastoService.delete(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<CategoriaGasto> updateCategoriaGasto(@RequestBody CategoriaGasto categoriaGasto){
+        CategoriaGasto categoriaUpdated = categoriaGastoService.update(categoriaGasto);
+        return ResponseEntity.ok(categoriaUpdated);
     }
 }
