@@ -1,5 +1,6 @@
 package com.luizamartins.life_manager.categoriagasto;
 
+import com.luizamartins.life_manager.core.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoriaGastoService {
@@ -33,13 +33,16 @@ public class CategoriaGastoService {
 
     @Transactional
     public void delete(long id){
+        if(!categoriaGastoRepository.existsById(id)){
+            throw new EntityNotFoundException();
+        }
         categoriaGastoRepository.deleteById(id);
     }
 
     @Transactional
     public CategoriaGasto update(CategoriaGasto categoriaGasto){
         if(!categoriaGastoRepository.existsById(categoriaGasto.getId())){
-            throw new RuntimeException();
+            throw new EntityNotFoundException();
         }
         return categoriaGastoRepository.save(categoriaGasto);
     }
