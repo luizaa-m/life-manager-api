@@ -26,6 +26,10 @@ public class CategoriaGastoService {
         return categoriaGastoRepository.findAll(pageable);
     }
 
+    public List<CategoriaGasto> findAllByNomeFilter(String nome){
+        return categoriaGastoRepository.findByNomeContains(nome);
+    }
+
     @Transactional
     public CategoriaGasto create(CategoriaGasto categoriaGasto){
         return categoriaGastoRepository.save(categoriaGasto);

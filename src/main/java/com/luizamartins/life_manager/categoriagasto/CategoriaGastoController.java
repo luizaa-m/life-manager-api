@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 
@@ -23,11 +22,15 @@ public class CategoriaGastoController {
         return ResponseEntity.ok(this.categoriaGastoService.findAll());
     }
 
-    @RequestMapping(path="/")
-    @GetMapping
+    @GetMapping(params={"page","size"})
     public ResponseEntity<Page<CategoriaGasto>> getAllByPaginate(@RequestParam int page, @RequestParam int size){
         Pageable pageable = PageRequest.of(page,size);
         return ResponseEntity.ok(this.categoriaGastoService.findAllByPageable(pageable));
+    }
+
+    @GetMapping(params="nome")
+    public ResponseEntity<List<CategoriaGasto>> getFilteredCategoriaGastoByName(@RequestParam String nome){
+        return ResponseEntity.ok(this.categoriaGastoService.findAllByNomeFilter(nome));
     }
 
     @PostMapping
